@@ -35,6 +35,8 @@
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       transition: background 0.3s;
+      position: relative;
+      z-index: 1;
     }
     body.dark-mode .container {
       background: #2D3748;
@@ -65,6 +67,7 @@
       font-size: 14px;
       font-family: 'Roboto', sans-serif;
       transition: border-color 0.2s, box-shadow 0.2s;
+      touch-action: manipulation;
     }
     body.dark-mode input,
     body.dark-mode textarea,
@@ -105,6 +108,7 @@
       min-height: 44px;
       font-size: 14px;
       transition: background 0.2s, transform 0.1s;
+      touch-action: manipulation;
     }
     button:hover:not(:disabled) {
       opacity: 0.9;
@@ -141,6 +145,16 @@
       margin-left: 8px;
     }
     .btn-delete:active {
+      background: linear-gradient(90deg, #B02A37, #DC3545);
+    }
+    .btn-delete-user {
+      background: linear-gradient(90deg, #DC3545, #B02A37);
+      padding: 10px 14px;
+      font-size: 13px;
+      min-height: 44px;
+      margin-left: 8px;
+    }
+    .btn-delete-user:active {
       background: linear-gradient(90deg, #B02A37, #DC3545);
     }
     .btn-change-password {
@@ -371,6 +385,7 @@
       .container {
         padding: 16px;
         border-radius: 8px;
+        min-height: calc(100vh - 24px);
       }
       h2 { font-size: 22px; margin-bottom: 16px; }
       h3 { font-size: 18px; }
@@ -380,12 +395,12 @@
         padding: 10px;
         margin: 6px 0;
       }
-      button, .btn-preview, .btn-delete, .btn-change-password, .btn-create-equipe, .btn-export-csv, .btn-toggle-theme {
+      button, .btn-preview, .btn-delete, .btn-delete-user, .btn-change-password, .btn-create-equipe, .btn-export-csv, .btn-toggle-theme {
         padding: 10px;
         font-size: 13px;
         min-height: 44px;
       }
-      .btn-delete, .btn-change-password, .btn-toggle-theme {
+      .btn-delete, .btn-delete-user, .btn-change-password, .btn-toggle-theme {
         margin-left: 6px;
       }
       table {
@@ -419,7 +434,7 @@
       .container { padding: 12px; }
       input, textarea, select, button { font-size: 12px; padding: 8px; }
       th, td { padding: 8px; font-size: 12px; }
-      .btn-preview, .btn-delete, .btn-change-password, .btn-create-equipe, .btn-export-csv, .btn-toggle-theme {
+      .btn-preview, .btn-delete, .btn-delete-user, .btn-change-password, .btn-create-equipe, .btn-export-csv, .btn-toggle-theme {
         padding: 8px;
         font-size: 12px;
       }
@@ -429,9 +444,11 @@
 <body>
   <div class="container" id="loginArea">
     <h2>Login</h2>
-    <input type="text" id="login" placeholder="Usuário" autocomplete="username" required aria-label="Nome de usuário">
-    <input type="password" id="senha" placeholder="Senha" autocomplete="current-password" required aria-label="Senha">
-    <button onclick="logar()" aria-label="Entrar no sistema">Entrar</button>
+    <form id="loginForm" aria-label="Formulário de login">
+      <input type="text" id="login" placeholder="Usuário" autocomplete="username" required aria-label="Nome de usuário">
+      <input type="password" id="senha" placeholder="Senha" autocomplete="current-password" required aria-label="Senha">
+      <button type="submit" aria-label="Entrar no sistema">Entrar</button>
+    </form>
     <div id="mensagem" role="alert"></div>
   </div>
 
@@ -492,26 +509,26 @@
     // State Management
     const State = {
       usuarios: JSON.parse(localStorage.getItem('usuarios')) || [
-        { usuario: "Admin", senha: "admin123", tipo: "admin", token: Utils.generateUUID() },
-        { usuario: "Financeiro", senha: "1234", tipo: "financeiro", token: Utils.generateUUID() },
-        { usuario: "Brunno", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
-        { usuario: "Cauane", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
-        { usuario: "Gabi", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
-        { usuario: "Thiago", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
-        { usuario: "Suely", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
-        { usuario: "Geovana", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
-        { usuario: "Lorena", senha: "1234", tipo: "comum", token: Utils.generateUUID() }
+        { usuario: "admin", senha: "1234", tipo: "admin", token: Utils.generateUUID() },
+        { usuario: "financeiro", senha: "1234", tipo: "financeiro", token: Utils.generateUUID() },
+        { usuario: "brunno", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
+        { usuario: "cauane", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
+        { usuario: "gabi", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
+        { usuario: "thiago", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
+        { usuario: "suely", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
+        { usuario: "geovana", senha: "1234", tipo: "comum", token: Utils.generateUUID() },
+        { usuario: "lorena", senha: "1234", tipo: "comum", token: Utils.generateUUID() }
       ],
       equipes: JSON.parse(localStorage.getItem('equipes')) || {
-        "Brunno": "Bem Aventurados",
-        "Cauane": "Voz que Clama",
-        "Thiago": "Insaciáveis",
-        "Suely": "Obstinados",
-        "Geovana": "Sheepers",
-        "Lorena": "Maanaim",
-        "Felipe": "Estevans",
-        "Luana": "Estevans",
-        "Gabi": "Estevans"
+        "brunno": "Bem Aventurados",
+        "cauane": "Voz que Clama",
+        "thiago": "Insaciáveis",
+        "suely": "Obstinados",
+        "geovana": "Sheepers",
+        "lorena": "Maanaim",
+        "felipe": "Estevans",
+        "luana": "Estevans",
+        "gabi": "Estevans"
       },
       valoresSemanais: JSON.parse(localStorage.getItem('valoresSemanais')) || {},
       usuarioLogado: null,
@@ -520,7 +537,20 @@
 
     // Data Migration
     const migrateData = () => {
-      // Migrate old date formats
+      // Normalize user names to lowercase
+      State.usuarios = State.usuarios.map(user => ({
+        ...user,
+        usuario: user.usuario.toLowerCase()
+      }));
+
+      // Normalize equipe keys to lowercase
+      const newEquipes = {};
+      for (const usuario in State.equipes) {
+        newEquipes[usuario.toLowerCase()] = State.equipes[usuario];
+      }
+      State.equipes = newEquipes;
+
+      // Normalize valoresSemanais keys to lowercase
       const newValoresSemanais = {};
       for (const semana in State.valoresSemanais) {
         let newSemana = semana;
@@ -532,7 +562,10 @@
           };
           newSemana = `${convertDate(startDate)} a ${convertDate(endDate)}`;
         }
-        newValoresSemanais[newSemana] = State.valoresSemanais[semana];
+        newValoresSemanais[newSemana] = {};
+        for (const usuario in State.valoresSemanais[semana]) {
+          newValoresSemanais[newSemana][usuario.toLowerCase()] = State.valoresSemanais[semana][usuario];
+        }
       }
       State.valoresSemanais = newValoresSemanais;
 
@@ -636,22 +669,42 @@
 
     // Authentication
     const Auth = {
-      login: () => {
-        const login = Utils.sanitizeInput(document.getElementById("login")?.value);
-        const senha = document.getElementById("senha")?.value;
-        const user = State.usuarios.find(u => u.usuario === login && u.senha === senha);
-
-        if (user) {
-          State.usuarioLogado = user;
-          State.sessionToken = user.token;
-          document.getElementById("loginArea")?.classList.add("hidden");
-          document.getElementById("areaUsuario")?.classList.remove("hidden");
-          document.getElementById("boasVindas").innerText = `Bem-vindo, ${user.usuario}!`;
-          UI.showMessage('mensagem', '', '');
-          UserInterface.renderOptions(user);
-        } else {
-          UI.showMessage('mensagem', 'Usuário ou senha incorretos.', 'error');
+      login: (event) => {
+        event.preventDefault();
+        const loginInput = document.getElementById("login");
+        const senhaInput = document.getElementById("senha");
+        if (!loginInput || !senhaInput) {
+          UI.showMessage('mensagem', 'Erro interno: campos de login não encontrados.', 'error');
+          return;
         }
+
+        const login = Utils.sanitizeInput(loginInput.value.trim());
+        const senha = senhaInput.value;
+        UI.showMessage('mensagem', `Tentando login com usuário: ${login}`, 'success');
+
+        if (!login || !senha) {
+          UI.showMessage('mensagem', 'Por favor, preencha usuário e senha.', 'error');
+          return;
+        }
+
+        const user = State.usuarios.find(u => u.usuario.toLowerCase() === login.toLowerCase());
+        if (!user) {
+          UI.showMessage('mensagem', `Usuário "${login}" não encontrado.`, 'error');
+          return;
+        }
+
+        if (user.senha !== senha) {
+          UI.showMessage('mensagem', `Senha incorreta para "${login}".`, 'error');
+          return;
+        }
+
+        State.usuarioLogado = user;
+        State.sessionToken = user.token;
+        document.getElementById("loginArea")?.classList.add("hidden");
+        document.getElementById("areaUsuario")?.classList.remove("hidden");
+        document.getElementById("boasVindas").innerText = `Bem-vindo, ${user.usuario}!`;
+        UI.showMessage('mensagem', 'Login bem-sucedido!', 'success');
+        UserInterface.renderOptions(user);
       },
       logout: () => {
         document.getElementById("loginArea")?.classList.remove("hidden");
@@ -963,7 +1016,7 @@
         const form = event.target;
         UI.setLoading(form.querySelector('button'), true);
 
-        const username = Utils.sanitizeInput(document.getElementById("novoUsuario")?.value.trim());
+        const username = Utils.sanitizeInput(document.getElementById("novoUsuario")?.value.trim().toLowerCase());
         const password = document.getElementById("novaSenha")?.value;
         const tipo = document.getElementById("tipoUsuario")?.value;
         const equipe = document.getElementById("equipeUsuario")?.value;
@@ -974,7 +1027,7 @@
           return;
         }
 
-        if (State.usuarios.some(u => u.usuario === username)) {
+        if (State.usuarios.some(u => u.usuario.toLowerCase() === username)) {
           UI.showMessage("mensagemAdmin", "Erro: Usuário já existe.", "error");
           UI.setLoading(form.querySelector('button'), false);
           return;
@@ -1189,6 +1242,7 @@
     };
 
     // Event Listeners
+    document.getElementById("loginForm")?.addEventListener("submit", Auth.login);
     document.getElementById("previewModal")?.addEventListener("click", (e) => {
       if (e.target === document.getElementById("previewModal")) {
         Modal.closePreview();
@@ -1212,7 +1266,6 @@
     // Initialize
     migrateData();
     Theme.init();
-    window.logar = Auth.login;
     window.voltarLogin = Auth.logout;
     window.closePreviewModal = Modal.closePreview;
     window.toggleTheme = Theme.toggle;
