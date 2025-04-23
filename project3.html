@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Plus - Bruno Lima</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease-out;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 1rem 0;
+            transition: transform 0.5s ease;
+        }
+        img:hover {
+            transform: scale(1.05);
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #3b82f6, #1d4ed8);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .btn:hover {
+            background: linear-gradient(to right, #2563eb, #1e40af);
+            transform: scale(1.05);
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Portfolio Plus</h1>
+        <img src="https://via.placeholder.com/800x400" alt="Portfolio Plus Screenshot">
+        <p class="text-lg">
+            Portfolio Plus é um portfólio dinâmico com animações modernas e design responsivo, projetado para destacar projetos de forma elegante. Inclui transições suaves, efeitos de hover interativos e um layout otimizado para todos os dispositivos.
+        </p>
+        <p class="text-lg mt-4">
+            <strong>Tecnologias:</strong> HTML, CSS, JavaScript, Tailwind CSS
+        </p>
+        <a href="index.html" class="btn">Voltar ao Portfólio</a>
+    </div>
+
+    <script>
+        const container = document.querySelector('.container');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        observer.observe(container);
+    </script>
+</body>
+</html>
