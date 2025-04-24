@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projetos - Bruno Lima</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            margin: 0;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        /* General Section Styles */
+        .section {
+            padding: 4rem 1.5rem;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Futuristic Card Styles */
+        .futuristic-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid transparent;
+            border-image: linear-gradient(to bottom right, #00f7ff, #1e90ff) 1;
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+        }
+
+        .futuristic-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
+            box-shadow: 0 0 40px rgba(0, 247, 255, 0.7);
+        }
+
+        .futuristic-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+        }
+
+        .futuristic-card p {
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+
+        .futuristic-card .ver-mais {
+            background: transparent;
+            border: 2px solid #00f7ff;
+            color: #00f7ff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+        }
+
+        .futuristic-card .ver-mais:hover {
+            background: #00f7ff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 1);
+            transform: scale(1.1);
+        }
+
+        /* Particle Effect Styles */
+        .particle-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .futuristic-card:hover .particle-effect {
+            opacity: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: #00f7ff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00f7ff;
+        }
+
+        @keyframes particleMove {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+        }
+
+        /* Page Transition Styles */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1e3a8a, #60a5fa);
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0);
+            border-radius: 50%;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 100;
+        }
+
+        .page-transition.active {
+            opacity: 1;
+            transform: scale(3);
+        }
+
+        /* General Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .navbar {
+                padding: 0.5rem;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .navbar h1 {
+                font-size: 1.5rem;
+            }
+
+            .futuristic-card {
+                padding: 1rem;
+            }
+
+            .futuristic-card h3 {
+                font-size: 1.25rem;
+            }
+
+            .futuristic-card p {
+                font-size: 0.9rem;
+            }
+
+            .particle,
+            .particle-effect {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .section h2 {
+                font-size: 1.75rem;
+            }
+
+            .futuristic-card h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Transition Overlay -->
+    <div class="page-transition"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold md:text-3xl">Brunno Lima</h1>
+        <ul class="flex space-x-6 md:space-x-8 flex-col md:flex-row">
+            <li><a href="index.html#home" class="hover:text-blue-300 transition nav-link text-lg">Home</a></li>
+            <li><a href="index.html#sobre" class="hover:text-blue-300 transition nav-link text-lg">Sobre</a></li>
+            <li><a href="projetos.html" class="hover:text-blue-300 transition nav-link text-lg">Projetos</a></li>
+            <li><a href="index.html#contato" class="hover:text-blue-300 transition nav-link text-lg">Contato</a></li>
+        </ul>
+    </nav>
+
+    <!-- Projetos Section -->
+    <section id="projetos" class="section">
+        <h2 class="text-3xl font-bold text-center mb-10 animate-slide-in">Meus Projetos</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div class="futuristic-card" style="--card-index: 1;">
+                <div class="particle-effect"></div>
+                <h3 class="mt-4 opacity-0 transition-opacity duration-500 delay-200" data-animate>Relatório Semanal de Valores</h3>
+                <p class="mt-2 opacity-0 transition-opacity duration-500 delay-300" data-animate>Uma aplicação web para gerenciar contribuições financeiras semanais.</p>
+                <a href="project1.html" class="ver-mais mt-4 inline-block opacity-0 transition-opacity duration-500 delay-400" data-animate>Ver mais</a>
+            </div>
+            <div class="futuristic-card" style="--card-index: 2;">
+                <div class="particle-effect"></div>
+                <h3 class="mt-4 opacity-0 transition-opacity duration-500 delay-200" data-animate>EM DESENVOLVIMENTO</h3>
+                <p class="mt-2 opacity-0 transition-opacity duration-500 delay-300" data-animate>em breve.</p>
+                            </div>
+            <div class="futuristic-card" style="--card-index: 3;">
+                <div class="particle-effect"></div>
+                <h3 class="mt-4 opacity-0 transition-opacity duration-500 delay-200" data-animate>EM DESENVOLVIMENTO</h3>
+                <p class="mt-2 opacity-0 transition-opacity duration-500 delay-300" data-animate>em breve.</p>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-6 text-center bg-blue-900 bg-opacity-50">
+        <p class="opacity-0 transition-opacity duration-500 delay-200" data-animate>
+            © 2025 Bruno Lima. Todos os direitos reservados. | 
+            <a href="https://brunnolimadev.github.io/" target="_blank" class="text-blue-300 hover:underline transition">Visite Meu Site</a>
+        </p>
+    </footer>
+
+    <!-- JavaScript for Animations and Transitions -->
+    <script>
+        // Intersection Observer for Section Animations
+        const sections = document.querySelectorAll('.section');
+        const cards = document.querySelectorAll('.futuristic-card');
+        const animatableElements = document.querySelectorAll('[data-animate]');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.id === 'projetos') {
+                        cards.forEach(card => {
+                            card.classList.add('visible');
+                        });
+                    }
+                    const children = entry.target.querySelectorAll('[data-animate]');
+                    children.forEach(child => {
+                        child.style.opacity = '1';
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
+
+        // Page Transition Effect
+        const navLinks = document.querySelectorAll('.nav-link');
+        const transitionOverlay = document.querySelector('.page-transition');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                transitionOverlay.classList.add('active');
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 600);
+            });
+        });
+
+        // Navbar Hide/Show on Scroll
+        let lastScroll = 0;
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Particle Effect for Background
+        function createParticle() {
+            if (window.innerWidth <= 768 && Math.random() > 0.3) return;
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.width = `${Math.random() * 8 + 4}px`;
+            particle.style.height = particle.style.width;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.animationDuration = `${Math.random() * 6 + 4}s`;
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 8000);
+        }
+
+        setInterval(createParticle, 300);
+
+        // Particle Interaction on Mouse Move
+        if (window.innerWidth > 768) {
+            document.addEventListener('mousemove', (e) => {
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach(particle => {
+                    const rect = particle.getBoundingClientRect();
+                    const dx = e.clientX - (rect.left + rect.width / 2);
+                    const dy = e.clientY - (rect.top + rect.height / 2);
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        particle.style.transform = `translate(${dx * 0.2}px, ${dy * 0.2}px)`;
+                    }
+                });
+            });
+        }
+
+        // Particle Effect on Card Hover
+        if (window.innerWidth > 768) {
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const particleEffect = card.querySelector('.particle-effect');
+                    for (let i = 0; i < 10; i++) {
+                        const particle = document.createElement('div');
+                        particle.classList.add('particle');
+                        particle.style.width = `${Math.random() * 5 + 3}px`;
+                        particle.style.height = particle.style.width;
+                        particle.style.left = `${Math.random() * 100}%`;
+                        particle.style.top = `${Math.random() * 100}%`;
+                        particle.style.setProperty('--dx', `${(Math.random() - 0.5) * 100}px`);
+                        particle.style.setProperty('--dy', `${(Math.random() - 0.5) * 100}px`);
+                        particle.style.animation = `particleMove ${Math.random() * 1 + 0.5}s ease-out`;
+                        particleEffect.appendChild(particle);
+                        setTimeout(() => particle.remove(), 1500);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfólio de Brunno Lima, desenvolvedor apaixonado por automações e experiências digitais incríveis.">
+    <meta name="keywords" content="desenvolvedor, portfólio, automação, Python, HTML, CSS, JavaScript">
+    <meta name="author" content="Brunno Lima">
+    <meta property="og:title" content="Portfólio Bruno Lima">
+    <meta property="og:description" content="Desenvolvedor apaixonado por criar experiências digitais incríveis.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:url" content="https://brunnolimadev.github.io/">
+    <meta property="og:type" content="website">
     <title>Portfólio Bruno Lima</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* General Body Styles */
         body {
-            background: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background: none; /* Lazy load background image via JS */
             background-size: cover;
             color: #ffffff;
             font-family: 'Arial', sans-serif;
@@ -17,10 +26,47 @@
             margin: 0;
             animation: bgZoom 20s infinite alternate ease-in-out;
         }
+
+        /* Animations for Background */
         @keyframes bgZoom {
             0% { background-size: 100%; }
             100% { background-size: 110%; }
         }
+
+        /* Loading Spinner Styles */
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 150;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        .loading-spinner.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .spinner-ring {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #00f7ff;
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navbar Styles */
         .navbar {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
@@ -30,9 +76,41 @@
             z-index: 50;
             transition: transform 0.3s ease;
         }
+
         .navbar.hidden {
             transform: translateY(-100%);
         }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: #00f7ff;
+            box-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .nav-link:focus {
+            outline: none;
+            color: #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+            box-shadow: 0 0 10px #00f7ff, 0 0 20px rgba(0, 247, 255, 0.5);
+        }
+
+        /* Hero Section Styles */
         .hero {
             height: 100vh;
             display: flex;
@@ -41,10 +119,12 @@
             text-align: center;
             position: relative;
         }
+
         .hero h1 {
             font-size: 3.5rem;
             animation: fadeInDown 1s ease-out;
         }
+
         .hero p {
             font-size: 1.25rem;
             animation: typing 3s steps(40) 1s 1 normal both, blink 0.5s step-end infinite;
@@ -54,6 +134,8 @@
             max-width: 90%;
             margin: 0 auto;
         }
+
+        /* General Section Styles */
         .section {
             padding: 4rem 1.5rem;
             position: relative;
@@ -61,108 +143,69 @@
             transform: translateX(-50px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
+
         .section:nth-child(even) {
             transform: translateX(50px);
         }
+
         .section.visible {
             opacity: 1;
             transform: translateX(0);
         }
+
+        /* Sobre Section Styles */
+        .sobre-container {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid transparent;
+            border-image: linear-gradient(to bottom right, #00f7ff, #1e90ff) 1;
+            border-radius: 15px;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+        }
+
+        .sobre-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(0, 247, 255, 0.7);
+        }
+
+        .sobre-subheading {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+        }
+
+        .highlight-skill {
+            color: #00f7ff;
+            text-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+            transition: text-shadow 0.3s ease;
+        }
+
+        .highlight-skill:hover {
+            text-shadow: 0 0 15px rgba(0, 247, 255, 0.8);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            height: 10px;
+            overflow: hidden;
+        }
+        .progress {
+            background: linear-gradient(to right, #00f7ff, #1e90ff);
+            height: 100%;
+            transition: width 1.5s ease-in-out;
+        }
+
+        /* Projetos Section Styles */
         #projetos {
             background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
             background-size: cover;
             background-attachment: fixed;
             position: relative;
         }
-        .futuristic-card {
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid transparent;
-            border-image: linear-gradient(to bottom right, #00f7ff, #1e90ff) 1;
-            border-radius: 15px;
-            padding: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
-        }
-        .futuristic-card:hover {
-            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
-            box-shadow: 0 0 40px rgba(0, 247, 255, 0.7);
-        }
-        .futuristic-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: #00f7ff;
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
-        }
-        .futuristic-card p {
-            color: #e0e0e0;
-            font-size: 1rem;
-        }
-        .futuristic-card .ver-mais {
-            background: transparent;
-            border: 2px solid #00f7ff;
-            color: #00f7ff;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
-        }
-        .futuristic-card .ver-mais:hover {
-            background: #00f7ff;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 247, 255, 1);
-            transform: scale(1.1);
-        }
-        .mockup-frame {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80') no-repeat center;
-            background-size: cover;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
-            transition: transform 0.5s ease;
-        }
-        .mockup-frame:hover {
-            transform: scale(1.05);
-        }
-        .mockup-frame img {
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 80%;
-            height: 80%;
-            object-fit: cover;
-            border: 2px solid #00f7ff;
-            border-radius: 5px;
-        }
-        .particle-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .futuristic-card:hover .particle-effect {
-            opacity: 1;
-        }
-        .particle {
-            position: absolute;
-            background: #00f7ff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00f7ff;
-        }
-        @keyframes particleMove {
-            0% { transform: translate(0, 0); opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
-        }
+
+        /* Page Transition Styles */
         .page-transition {
             position: fixed;
             top: 0;
@@ -177,17 +220,203 @@
             transition: opacity 0.6s ease, transform 0.6s ease;
             z-index: 100;
         }
+
         .page-transition.active {
             opacity: 1;
             transform: scale(3);
         }
+
+        /* Form Input Styles */
         .form-input {
             transition: all 0.3s ease;
         }
+
         .form-input:focus {
             border-color: #60a5fa;
             box-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
+            outline: none;
         }
+
+        /* Contact Form Feedback Styles */
+        .form-message {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-message.success {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            opacity: 1;
+        }
+
+        .form-message.error {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            opacity: 1;
+        }
+
+        /* Chat Widget Styles */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00f7ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+            z-index: 60;
+        }
+
+        .chat-button:hover, .chat-button:focus {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.8);
+            outline: none;
+        }
+
+        .chat-button svg {
+            width: 30px;
+            height: 30px;
+            fill: #00f7ff;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 320px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid transparent;
+            border-image: linear-gradient(to bottom right, #00f7ff, #1e90ff) 1;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 60;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .chat-window.open {
+            display: flex;
+        }
+
+        .chat-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            color: #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+            margin: 0;
+        }
+
+        .chat-close {
+            background: transparent;
+            border: none;
+            color: #00f7ff;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-close:hover, .chat-close:focus {
+            color: #ffffff;
+            transform: scale(1.2);
+            outline: none;
+            box-shadow: 0 0 10px #00f7ff;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 0.75rem;
+            border-radius: 10px;
+            background: rgba(0, 247, 255, 0.1);
+            border: 1px solid #00f7ff;
+            box-shadow: 0 0 5px rgba(0, 247, 255, 0.3);
+            color: #ffffff;
+            text-shadow: 0 0 3px rgba(0, 247, 255, 0.3);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            align-self: flex-start;
+        }
+
+        .chat-message.typing {
+            animation: typing 1.5s steps(40) forwards, blink 0.5s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #00f7ff;
+        }
+
+        /* Back to Top Button Styles */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00f7ff;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+            z-index: 60;
+        }
+        .back-to-top.visible {
+            display: flex;
+        }
+        .back-to-top:hover, .back-to-top:focus {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.8);
+            outline: none;
+        }
+        .back-to-top svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* General Animations */
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -198,13 +427,16 @@
                 transform: translateY(0);
             }
         }
+
         @keyframes typing {
             from { width: 0; }
             to { width: 100%; }
         }
+
         @keyframes blink {
             50% { border-color: transparent; }
         }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -215,93 +447,125 @@
                 transform: translateX(0);
             }
         }
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float 8s infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-80px); }
-            100% { transform: translateY(0); }
-        }
+
+        /* Responsive Styles */
         @media (max-width: 768px) {
             body {
                 animation: none;
             }
+
             .hero h1 {
                 font-size: 2.5rem;
             }
+
             .hero p {
                 font-size: 1rem;
             }
+
             .section {
                 padding: 3rem 1rem;
             }
+
             .navbar {
                 padding: 0.5rem;
             }
+
             .navbar ul {
                 flex-direction: column;
                 align-items: center;
                 gap: 0.5rem;
             }
+
             .navbar h1 {
                 font-size: 1.5rem;
             }
-            .futuristic-card {
-                padding: 1rem;
-            }
-            . futuristic-card h3 {
-                font-size: 1.25rem;
-            }
-            .futuristic-card p {
-                font-size: 0.9rem;
-            }
-            .mockup-frame {
-                height: 150px;
-            }
+
             .form-input {
                 font-size: 0.9rem;
             }
-            .particle, .particle-effect {
-                display: none;
-            }
+
             .hero-buttons {
                 flex-direction: column;
                 gap: 1rem;
             }
+
+            .sobre-subheading {
+                font-size: 1.25rem;
+            }
+
+            .chat-window {
+                width: 280px;
+                height: 350px;
+                bottom: 80px;
+                right: 10px;
+            }
+
+            .chat-button {
+                bottom: 10px;
+                right: 10px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .chat-button svg {
+                width: 25px;
+                height: 25px;
+            }
+
+            .back-to-top {
+                bottom: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+            }
+            .back-to-top svg {
+                width: 20px;
+                height: 20px;
+            }
         }
+
         @media (max-width: 640px) {
             .hero h1 {
                 font-size: 2rem;
             }
+
             .hero p {
                 font-size: 0.9rem;
             }
+
             .section h2 {
                 font-size: 1.75rem;
             }
-            .futuristic-card h3 {
+
+            .sobre-subheading {
                 font-size: 1.1rem;
+            }
+
+            .chat-window {
+                width: 90%;
+                height: 300px;
+                right: 5%;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner">
+        <div class="spinner-ring"></div>
+    </div>
+
     <!-- Page Transition Overlay -->
     <div class="page-transition"></div>
 
     <!-- Navbar -->
-    <nav class="navbar p-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold md:text-3xl">Bruno Lima</h1>
+    <nav class="navbar p-4 flex justify-between items-center" role="navigation" aria-label="Navegação principal">
+        <h1 class="text-2xl font-bold md:text-3xl">Brunno Lima</h1>
         <ul class="flex space-x-6 md:space-x-8 flex-col md:flex-row">
-            <li><a href="#home" class="hover:text-blue-300 transition nav-link text-lg">Home</a></li>
-            <li><a href="#sobre" class="hover:text-blue-300 transition nav-link text-lg">Sobre</a></li>
-            <li><a href="#projetos" class="hover:text-blue-300 transition nav-link text-lg">Projetos</a></li>
-            <li><a href="#contato" class="hover:text-blue-300 transition nav-link text-lg">Contato</a></li>
+            <li><a href="#home" class="nav-link text-lg" aria-label="Ir para a seção Home">Home</a></li>
+            <li><a href="#sobre" class="nav-link text-lg" aria-label="Ir para a seção Sobre">Sobre</a></li>
+            <li><a href="projetos.html" class="nav-link text-lg" aria-label="Ir para a página de Projetos">Projetos</a></li>
+            <li><a href="#contato" class="nav-link text-lg" aria-label="Ir para a seção Contato">Contato</a></li>
         </ul>
     </nav>
 
@@ -311,7 +575,7 @@
             <h1 class="font-bold">Bem-vindo ao Meu Portfólio</h1>
             <p class="mt-4">Desenvolvedor apaixonado por criar experiências digitais incríveis</p>
             <div class="mt-6 flex space-x-4 justify-center hero-buttons">
-                <a href="#projetos" class="inline-block bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-blue-800 transition transform hover:scale-105 opacity-0 transition-opacity duration-500 delay-200" data-animate>Ver Projetos</a>
+                <a href="projetos.html" class="inline-block bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-blue-800 transition transform hover:scale-105 opacity-0 transition-opacity duration-500 delay-200" data-animate>Ver Projetos</a>
                 <a href="https://brunnolimadev.github.io/" target="_blank" class="inline-block bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-blue-800 transition transform hover:scale-105 opacity-0 transition-opacity duration-500 delay-400" data-animate>Visite Meu Site</a>
             </div>
         </div>
@@ -320,44 +584,62 @@
     <!-- Sobre Section -->
     <section id="sobre" class="section">
         <h2 class="text-3xl font-bold text-center mb-10 animate-slide-in">Sobre Mim</h2>
-        <div class="max-w-4xl mx-auto card">
-            <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-200" data-animate>
-                Sou um desenvolvedor full-stack com experiência em criar aplicações web modernas e responsivas. Minha paixão é transformar ideias em realidade através de código limpo e design inovador. Trabalho com tecnologias como HTML, CSS, JavaScript, React, Node.js e muito mais.
-            </p>
+        <div class="max-w-4xl mx-auto">
+            <div class="sobre-container p-6 md:p-8">
+                <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-200 mb-4" data-animate>
+                    Sou um desenvolvedor com foco em automações utilizando <span class="highlight-skill">Python</span>, sempre buscando soluções inteligentes para tarefas repetitivas e processos manuais. Minha principal motivação é otimizar rotinas, economizar tempo e transformar problemas cotidianos em oportunidades de eficiência por meio da programação.
+                </p>
+                <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-300 mb-4" data-animate>
+                    Tenho experiência prática com <span class="highlight-skill">Python</span> para uso geral, seja na criação de scripts personalizados para manipulação de planilhas, integração com APIs, automação de sistemas internos ou extração de dados. Também utilizo bibliotecas como Pandas, Tkinter, OpenPyXL e outras, sempre com foco em entregar soluções funcionais e sob medida.
+                </p>
+                <h3 class="sobre-subheading mb-4 opacity-0 transition-opacity duration-500 delay-400" data-animate>Minhas Habilidades</h3>
+                <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-500 mb-4" data-animate>
+                    Além do <span class="highlight-skill">Python</span>, domino <span class="highlight-skill">HTML</span> e tenho boa familiaridade com <span class="highlight-skill">CSS</span> e <span class="highlight-skill">JavaScript</span>, o que me permite criar interfaces simples e objetivas quando necessário, especialmente em painéis internos ou sistemas de controle.
+                </p>
+                <div class="skills-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 opacity-0 transition-opacity duration-500 delay-550" data-animate>
+                    <div>
+                        <p class="text-lg">Python</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-lg">HTML</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-lg">CSS</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-lg">JavaScript</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-600 mb-4" data-animate>
+                    Já desenvolvi sistemas voltados para controle de estoque, geração de relatórios, automações com planilhas, e pequenos aplicativos que facilitam o dia a dia de usuários e empresas. Tenho facilidade em entender a necessidade do cliente e transformar isso em um programa funcional, com atenção especial à clareza do código e à experiência de uso.
+                </p>
+                <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-700" data-animate>
+                    Gosto de trabalhar de forma organizada, explorar novas ferramentas e estou sempre disposto a aprender algo novo que possa agregar valor aos projetos. Se o que você precisa é alguém que saiba resolver problemas com praticidade e eficiência, pode contar comigo.
+                </p>
+            </div>
         </div>
     </section>
 
     <!-- Projetos Section -->
     <section id="projetos" class="section">
         <h2 class="text-3xl font-bold text-center mb-10 animate-slide-in">Meus Projetos</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <div class="futuristic-card" style="--card-index: 1;">
-                <div class="mockup-frame">
-                    <img src="https://via.placeholder.com/300x200" alt="Relatório Semanal de Valores">
-                </div>
-                <div class="particle-effect"></div>
-                <h3 class="mt-4 opacity-0 transition-opacity duration-500 delay-200" data-animate>Relatório Semanal de Valores</h3>
-                <p class="mt-2 opacity-0 transition-opacity duration-500 delay-300" data-animate>Uma aplicação web para gerenciar contribuições financeiras semanais.</p>
-                <a href="project1.html" class="ver-mais mt-4 inline-block opacity-0 transition-opacity duration-500 delay-400" data-animate>Ver mais</a>
-            </div>
-            <div class="futuristic-card" style="--card-index: 2;">
-                <div class="mockup-frame">
-                    <img src="https://via.placeholder.com/300x200" alt="Projeto 2">
-                </div>
-                <div class="particle-effect"></div>
-                <h3 class="mt-4 opacity-0 transition-opacity duration-500 delay-200" data-animate>E-Shop Platform</h3>
-                <p class="mt-2 opacity-0 transition-opacity duration-500 delay-300" data-animate>Uma plataforma de e-commerce com backend em Node.js.</p>
-                <a href="project2.html" class="ver-mais mt-4 inline-block opacity-0 transition-opacity duration-500 delay-400" data-animate>Ver mais</a>
-            </div>
-            <div class="futuristic-card" style="--card-index: 3;">
-                <div class="mockup-frame">
-                    <img src="https://via.placeholder.com/300x200" alt="Projeto 3">
-                </div>
-                <div class="particle-effect"></div>
-                <h3 class="mt-4 opacity-0 transition-opacity duration-500 delay-200" data-animate>Portfolio Plus</h3>
-                <p class="mt-2 opacity-0 transition-opacity duration-500 delay-300" data-animate>Um portfólio dinâmico com animações modernas.</p>
-                <a href="project3.html" class="ver-mais mt-4 inline-block opacity-0 transition-opacity duration-500 delay-400" data-animate>Ver mais</a>
-            </div>
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-lg opacity-0 transition-opacity duration-500 delay-200" data-animate>
+                Confira meus projetos em uma página dedicada! 
+                <a href="projetos.html" class="text-blue-300 hover:underline transition">Clique aqui para ver mais</a>.
+            </p>
         </div>
     </section>
 
@@ -365,13 +647,18 @@
     <section id="contato" class="section">
         <h2 class="text-3xl font-bold text-center mb-10 animate-slide-in">Entre em Contato</h2>
         <div class="max-w-lg mx-auto card">
-            <p class="text-lg opacity-0 transition-opacity duration-500 delay-200" data-animate>Quer colaborar ou saber mais sobre meu trabalho? Envie-me uma mensagem!</p>
-            <div class="mt-6">
-                <input type="text" placeholder="Nome" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-300" data-animate>
-                <input type="email" placeholder="Email" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-400" data-animate>
-                <textarea placeholder="Mensagem" class="w-full p-2 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-500" data-animate></textarea>
-                <button class="mt-6 bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-blue-800 transition transform hover:scale-105 opacity-0 transition-opacity duration-500 delay-600" data-animate>Enviar</button>
-            </div>
+            <p class="text-lg opacity-0 transition-opacity duration-500 delay-200 mb-6" data-animate>
+                Quer colaborar ou saber mais sobre meu trabalho? Envie-me uma mensagem!
+            </p>
+            <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+                <!-- REPLACE THE ACTION URL ABOVE WITH YOUR ACTUAL FORMSPREE ENDPOINT (e.g., https://formspree.io/f/xabcdxyz) -->
+                <input type="text" name="name" placeholder="Nome" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-300" data-animate required aria-label="Digite seu nome">
+                <input type="email" name="email" placeholder="Email" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-400" data-animate required aria-label="Digite seu email">
+                <input type="tel" name="whatsapp" placeholder="Número de WhatsApp (opcional)" pattern="[0-9\s+()-]*" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-450" data-animate aria-label="Digite seu número de WhatsApp (opcional)">
+                <textarea name="message" placeholder="Mensagem" class="w-full p-2 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-500 h-32 resize-none" data-animate required aria-label="Digite sua mensagem"></textarea>
+                <button type="submit" class="mt-6 bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-blue-800 transition transform hover:scale-105 opacity-0 transition-opacity duration-500 delay-600" data-animate>Enviar</button>
+                <div id="form-message" class="form-message" role="alert"></div>
+            </form>
         </div>
     </section>
 
@@ -383,18 +670,50 @@
         </p>
     </footer>
 
-    <!-- JavaScript for Animations and Transitions -->
+    <!-- Chat Widget -->
+    <div class="chat-button" id="chat-button" role="button" aria-label="Abrir chat com assistente virtual" tabindex="0">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+        </svg>
+    </div>
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <h3>Assistente Virtual</h3>
+            <button class="chat-close" id="chat-close" aria-label="Fechar chat">×</button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <!-- Messages will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" role="button" aria-label="Voltar ao topo" tabindex="0">
+        <svg viewBox="0 0 24 24">
+            <path fill="#00f7ff" d="M12 3l-9 9h6v9h6v-9h6z"/>
+        </svg>
+    </button>
+
+    <!-- JavaScript for Animations, Transitions, Form Handling, and Chat Functionality -->
     <script>
+        // Lazy Load Background Image
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')";
+        });
+
+        // Hide Loading Spinner
+        window.addEventListener('load', () => {
+            const spinner = document.getElementById('loading-spinner');
+            setTimeout(() => spinner.classList.add('hidden'), 1000);
+        });
+
+        // Intersection Observer for Section Animations
         const sections = document.querySelectorAll('.section');
-        const cards = document.querySelectorAll('.futuristic-card');
         const animatableElements = document.querySelectorAll('[data-animate]');
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    if (entry.target.id === 'projetos') {
-                        cards.forEach(card => card.classList.add('visible'));
-                    }
                     const children = entry.target.querySelectorAll('[data-animate]');
                     children.forEach(child => {
                         child.style.opacity = '1';
@@ -405,6 +724,7 @@
 
         sections.forEach(section => observer.observe(section));
 
+        // Page Transition Effect
         const navLinks = document.querySelectorAll('.nav-link');
         const transitionOverlay = document.querySelector('.page-transition');
 
@@ -412,14 +732,22 @@
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const href = link.getAttribute('href');
-                transitionOverlay.classList.add('active');
-                setTimeout(() => {
-                    window.location.hash = href;
-                    transitionOverlay.classList.remove('active');
-                }, 600);
+                if (href.startsWith('#')) {
+                    transitionOverlay.classList.add('active');
+                    setTimeout(() => {
+                        window.location.hash = href;
+                        transitionOverlay.classList.remove('active');
+                    }, 600);
+                } else {
+                    transitionOverlay.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 600);
+                }
             });
         });
 
+        // Navbar Hide/Show on Scroll
         let lastScroll = 0;
         const navbar = document.querySelector('.navbar');
         window.addEventListener('scroll', () => {
@@ -432,6 +760,7 @@
             lastScroll = currentScroll;
         });
 
+        // Particle Effect for Background
         function createParticle() {
             if (window.innerWidth <= 768 && Math.random() > 0.3) return;
             const particle = document.createElement('div');
@@ -447,6 +776,7 @@
 
         setInterval(createParticle, 300);
 
+        // Particle Interaction on Mouse Move
         if (window.innerWidth > 768) {
             document.addEventListener('mousemove', (e) => {
                 const particles = document.querySelectorAll('.particle');
@@ -462,26 +792,110 @@
             });
         }
 
-        if (window.innerWidth > 768) {
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    const particleEffect = card.querySelector('.particle-effect');
-                    for (let i = 0; i < 10; i++) {
-                        const particle = document.createElement('div');
-                        particle.classList.add('particle');
-                        particle.style.width = `${Math.random() * 5 + 3}px`;
-                        particle.style.height = particle.style.width;
-                        particle.style.left = `${Math.random() * 100}%`;
-                        particle.style.top = `${Math.random() * 100}%`;
-                        particle.style.setProperty('--dx', `${(Math.random() - 0.5) * 100}px`);
-                        particle.style.setProperty('--dy', `${(Math.random() - 0.5) * 100}px`);
-                        particle.style.animation = `particleMove ${Math.random() * 1 + 0.5}s ease-out`;
-                        particleEffect.appendChild(particle);
-                        setTimeout(() => particle.remove(), 1500);
+        // Form Submission Handling
+        const form = document.getElementById('contact-form');
+        const formMessage = document.getElementById('form-message');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const formButton = form.querySelector('button');
+            formButton.disabled = true;
+            formButton.textContent = 'Enviando...';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
                     }
                 });
-            });
+
+                if (response.ok) {
+                    formMessage.classList.remove('error');
+                    formMessage.classList.add('success');
+                    formMessage.textContent = 'Mensagem enviada com sucesso! Entrarei em contato em breve.';
+                    form.reset();
+                } else {
+                    const errorData = await response.json();
+                    console.error('Formspree error:', errorData);
+                    throw new Error('Erro ao enviar a mensagem: ' + (errorData.error || 'Desconhecido'));
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                formMessage.classList.remove('success');
+                formMessage.classList.add('error');
+                formMessage.textContent = 'Erro ao enviar a mensagem. Tente novamente mais tarde.';
+            } finally {
+                formButton.disabled = false;
+                formButton.textContent = 'Enviar';
+            }
+        });
+
+        // Chat Functionality
+        const chatButton = document.getElementById('chat-button');
+        const chatWindow = document.getElementById('chat-window');
+        const chatClose = document.getElementById('chat-close');
+        const chatBody = document.getElementById('chat-body');
+        let hasSentWelcomeMessage = false;
+
+        function sendWelcomeMessage() {
+            if (hasSentWelcomeMessage) return;
+            const message = document.createElement('div');
+            message.classList.add('chat-message', 'typing');
+            message.textContent = 'Olá! Meu assistente virtual estará disponível em breve. Enquanto isso, envie uma mensagem no formulário de contato!';
+            chatBody.appendChild(message);
+            hasSentWelcomeMessage = true;
+            chatBody.scrollTop = chatBody.scrollHeight;
         }
+
+        chatButton.addEventListener('click', () => {
+            chatWindow.classList.toggle('open');
+            if (chatWindow.classList.contains('open')) {
+                sendWelcomeMessage();
+            }
+        });
+
+        chatButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                chatWindow.classList.toggle('open');
+                if (chatWindow.classList.contains('open')) {
+                    sendWelcomeMessage();
+                }
+            }
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWindow.classList.remove('open');
+        });
+
+        chatClose.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                chatWindow.classList.remove('open');
+            }
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        backToTop.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
     </script>
 </body>
 </html>
