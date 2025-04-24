@@ -246,18 +246,24 @@
         }
 
         .hero h1 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 3.5rem;
+            color: #00f7ff;
+            text-shadow: 0 0 20px rgba(0, 247, 255, 0.8);
             animation: fadeInDown 1s ease-out;
+            margin-bottom: 0; /* Removido espaço abaixo do título */
         }
 
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
+            color: #e0e0e0;
+            max-width: 90%;
+            word-wrap: break-word;
+            margin: 0.5rem auto 1rem;
             animation: typing 3s steps(40) 1s 1 normal both, blink 0.5s step-end infinite;
             white-space: nowrap;
             overflow: hidden;
             border-right: 2px solid #ffffff;
-            max-width: 90%;
-            margin: 0 auto;
         }
 
         /* General Section Styles */
@@ -265,20 +271,20 @@
             padding: 4rem 1.5rem;
             position: relative;
             opacity: 0;
-            transform: translateX(-50px);
+            transform: translateY(50px);
             transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .section:nth-child(even) {
-            transform: translateX(50px);
         }
 
         .section.visible {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         /* Sobre Section Styles */
+        #sobre {
+            margin-top: 0; /* Removido espaço acima */
+        }
+
         .sobre-container {
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid transparent;
@@ -329,25 +335,13 @@
             position: relative;
         }
 
-        /* Page Transition Styles */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #1e3a8a, #60a5fa);
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0);
-            border-radius: 50%;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            z-index: 100;
-        }
-
-        .page-transition.active {
-            opacity: 1;
-            transform: scale(3);
+        /* Contato Section Styles */
+        #contato h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+            margin-bottom: 1rem;
         }
 
         /* Form Input Styles */
@@ -532,6 +526,28 @@
             height: 24px;
         }
 
+        /* Page Transition Styles */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1e3a8a, #60a5fa);
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0);
+            border-radius: 50%;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 100;
+        }
+
+        .page-transition.active {
+            opacity: 1;
+            transform: scale(3);
+        }
+
+        /* General Animations */
         @keyframes slideUp {
             from {
                 transform: translateY(20px);
@@ -543,7 +559,6 @@
             }
         }
 
-        /* General Animations */
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -567,15 +582,15 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateX(-100px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateY(0);
             }
         }
 
-        /* Responsive Styles */
+        /* Responsividade para Smartphones */
         @media (max-width: 768px) {
             body {
                 background: linear-gradient(180deg, #0a0e2b 0%, #1c2526 100%);
@@ -601,29 +616,63 @@
                 display: none;
             }
 
+            .hero {
+                padding: 1rem;
+                height: auto;
+                min-height: 100vh;
+            }
+
             .hero h1 {
                 font-size: 2.5rem;
+                margin-bottom: 0;
             }
 
             .hero p {
                 font-size: 1rem;
+                max-width: 95%;
+                margin: 0.3rem auto 0.75rem;
             }
 
             .section {
-                padding: 3rem 1rem;
+                padding: 2rem 1rem;
             }
 
-            .form-input {
-                font-size: 0.9rem;
+            #sobre {
+                margin-top: 0;
             }
 
-            .hero-buttons {
-                flex-direction: column;
-                gap: 1rem;
+            #sobre h2 {
+                font-size: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .sobre-container {
+                padding: 1rem;
             }
 
             .sobre-subheading {
                 font-size: 1.25rem;
+            }
+
+            .sobre-container p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            #projetos h2 {
+                font-size: 1.75rem;
+            }
+
+            #projetos p {
+                font-size: 0.9rem;
+            }
+
+            #contato h2 {
+                font-size: 1.75rem;
+            }
+
+            .form-input {
+                font-size: 0.9rem;
             }
 
             .chat-window {
@@ -656,6 +705,23 @@
                 width: 20px;
                 height: 20px;
             }
+
+            .particle {
+                display: none;
+            }
+
+            /* Reduzir animações */
+            .section {
+                transition: none;
+            }
+
+            .hero h1, .hero p {
+                animation: none;
+            }
+
+            .sobre-container:hover {
+                transform: none;
+            }
         }
 
         @media (min-width: 769px) {
@@ -684,17 +750,41 @@
             }
 
             .section h2 {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
             }
 
             .sobre-subheading {
                 font-size: 1.1rem;
             }
 
+            .sobre-container p {
+                font-size: 0.85rem;
+            }
+
+            #projetos h2 {
+                font-size: 1.5rem;
+            }
+
+            #contato h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-input {
+                font-size: 0.85rem;
+            }
+
             .chat-window {
                 width: 90%;
                 height: 300px;
                 right: 5%;
+            }
+
+            .navbar h1 {
+                font-size: 1.25rem;
+            }
+
+            .mobile-menu .nav-link {
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -734,20 +824,16 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
+    <section id="home" class="hero section">
         <div>
-            <h1 class="font-bold">Bem-vindo ao Meu Portfólio</h1>
-            <p class="mt-4">Desenvolvedor apaixonado por criar experiências digitais incríveis</p>
-            <div class="mt-6 flex space-x-4 justify-center hero-buttons">
-                <a href="projetos.html" class="inline-block bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-blue-800 transition transform hover:scale-105 opacity-0 transition-opacity duration-500 delay-200" data-animate>Ver Projetos</a>
-                <a href="https://brunnolimadev.github.io/" target="_blank" class="inline-block bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-blue-800 transition transform hover:scale-105 opacity-0 transition-opacity duration-500 delay-400" data-animate>Visite Meu Site</a>
-            </div>
+            <h1>Bem-vindo ao Meu Portfólio</h1>
+            <p>Desenvolvedor apaixonado por criar experiências digitais incríveis</p>
         </div>
     </section>
 
     <!-- Sobre Section -->
     <section id="sobre" class="section">
-        <h2 class="text-3xl font-bold text-center mb-10 animate-slide-in">Sobre Mim</h2>
+        <h2 class="text-3xl font-bold text-center mb-10">Sobre Mim</h2>
         <div class="max-w-4xl mx-auto">
             <div class="sobre-container p-6 md:p-8">
                 <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-200 mb-4" data-animate>
@@ -789,7 +875,7 @@
                 <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-600 mb-4" data-animate>
                     Já desenvolvi sistemas voltados para controle de estoque, geração de relatórios, automações com planilhas, e pequenos aplicativos que facilitam o dia a dia de usuários e empresas. Tenho facilidade em entender a necessidade do cliente e transformar isso em um programa funcional, com atenção especial à clareza do código e à experiência de uso.
                 </p>
-                <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-700" data-animate>
+                <p class="text-lg md:text-xl opacity-0 transition-opacity duration-500 delay-700 mb-4" data-animate>
                     Gosto de trabalhar de forma organizada, explorar novas ferramentas e estou sempre disposto a aprender algo novo que possa agregar valor aos projetos. Se o que você precisa é alguém que saiba resolver problemas com praticidade e eficiência, pode contar comigo.
                 </p>
             </div>
@@ -798,7 +884,7 @@
 
     <!-- Projetos Section -->
     <section id="projetos" class="section">
-        <h2 class="text-3xl font-bold text-center mb-10 animate-slide-in">Meus Projetos</h2>
+        <h2 class="text-3xl font-bold text-center mb-10">Meus Projetos</h2>
         <div class="max-w-4xl mx-auto text-center">
             <p class="text-lg opacity-0 transition-opacity duration-500 delay-200" data-animate>
                 Confira meus projetos em uma página dedicada! 
@@ -809,13 +895,12 @@
 
     <!-- Contato Section -->
     <section id="contato" class="section">
-        <h2 class="text-3xl font-bold text-center antic-slide-in">Entre em Contato</h2>
-        <div class="max-w-lg mx-auto card">
+        <h2 class="text-3xl font-bold text-center mb-10">Entre em Contato</h2>
+        <div class="max-w-lg mx-auto">
             <p class="text-lg opacity-0 transition-opacity duration-500 delay-200 mb-6" data-animate>
                 Quer colaborar ou saber mais sobre meu trabalho? Envie-me uma mensagem!
             </p>
             <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
-                <!-- REPLACE THE ACTION URL ABOVE WITH YOUR ACTUAL FORMSPREE ENDPOINT (e.g., https://formspree.io/f/xabcdxyz) -->
                 <input type="text" name="name" placeholder="Nome" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-300" data-animate required aria-label="Digite seu nome">
                 <input type="email" name="email" placeholder="Email" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-400" data-animate required aria-label="Digite seu email">
                 <input type="tel" name="whatsapp" placeholder="Número de WhatsApp (opcional)" pattern="[0-9\s+()-]*" class="w-full p-2 mb-4 bg-transparent border-b border-white focus:outline-none form-input opacity-0 transition-opacity duration-500 delay-450" data-animate aria-label="Digite seu número de WhatsApp (opcional)">
@@ -857,7 +942,7 @@
         </svg>
     </button>
 
-    <!-- JavaScript for Animations, Transitions, Form Handling, Chat, Mobile Menu, and Constellations -->
+    <!-- JavaScript for Animations and Transitions -->
     <script>
         // Mobile Menu Functionality
         const hamburger = document.getElementById('hamburger');
@@ -962,7 +1047,7 @@
         const navbar = document.querySelector('.navbar');
         window.addEventListener('scroll', () => {
             const currentScroll = window.scrollY;
-            if (currentScroll > lastScroll && currentScroll > 100) {
+            if (currentScroll > lastScroll && currentScroll > 100 && window.innerWidth > 768) {
                 navbar.classList.add('hidden');
             } else {
                 navbar.classList.remove('hidden');
@@ -972,7 +1057,7 @@
 
         // Particle Effect for Background
         function createParticle() {
-            if (window.innerWidth <= 768 && Math.random() > 0.1) return;
+            if (window.innerWidth <= 768) return; // Desativado em smartphones
             const particle = document.createElement('div');
             particle.classList.add('particle');
             particle.style.width = `${Math.random() * 4 + 2}px`;
@@ -984,22 +1069,8 @@
             setTimeout(() => particle.remove(), 6000);
         }
 
-        setInterval(createParticle, 500);
-
-        // Particle Interaction on Mouse Move
         if (window.innerWidth > 768) {
-            document.addEventListener('mousemove', (e) => {
-                const particles = document.querySelectorAll('.particle');
-                particles.forEach(particle => {
-                    const rect = particle.getBoundingClientRect();
-                    const dx = e.clientX - (rect.left + rect.width / 2);
-                    const dy = e.clientY - (rect.top + rect.height / 2);
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 100) {
-                        particle.style.transform = `translate(${dx * 0.2}px, ${dy * 0.2}px)`;
-                    }
-                });
-            });
+            setInterval(createParticle, 500);
         }
 
         // Form Submission Handling
@@ -1130,7 +1201,7 @@
 
         // Criar Estrelas
         const stars = [];
-        const numStars = window.innerWidth > 768 ? 100 : 50;
+        const numStars = window.innerWidth > 768 ? 100 : 30; // Menos estrelas em smartphones
 
         for (let i = 0; i < numStars; i++) {
             stars.push({
@@ -1148,37 +1219,34 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             stars.forEach(star => {
-                // Atualizar posição
                 star.x += star.vx;
                 star.y += star.vy;
 
-                // Colisão com bordas
                 if (star.x < 0 || star.x > canvas.width) star.vx *= -1;
                 if (star.y < 0 || star.y > canvas.height) star.vy *= -1;
 
-                // Desenhar estrela
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
                 ctx.fill();
 
-                // Piscar
                 star.opacity = Math.max(0.3, Math.min(1, star.opacity + (Math.random() - 0.5) * 0.02));
             });
 
-            // Desenhar linhas de constelações
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < stars.length; i++) {
-                for (let j = i + 1; j < stars.length; j++) {
-                    const dx = stars[i].x - stars[j].x;
-                    const dy = stars[i].y - stars[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.moveTo(stars[i].x, stars[i].y);
-                        ctx.lineTo(stars[j].x, stars[j].y);
-                        ctx.stroke();
+            if (window.innerWidth > 768) { // Linhas de constelações apenas em desktops
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 0.5;
+                for (let i = 0; i < stars.length; i++) {
+                    for (let j = i + 1; j < stars.length; j++) {
+                        const dx = stars[i].x - stars[j].x;
+                        const dy = stars[i].y - stars[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < 100) {
+                            ctx.beginPath();
+                            ctx.moveTo(stars[i].x, stars[i].y);
+                            ctx.lineTo(stars[j].x, stars[j].y);
+                            ctx.stroke();
+                        }
                     }
                 }
             }
